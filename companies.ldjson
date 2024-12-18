@@ -1,0 +1,6 @@
+{"objectId": "1", "modifiedDate": "2024-12-17T21:33:35", "isDeleted": false, "url": "http://localhost:8000/companies/1", "name": "Apple", "domains": ["apple.com"], "industry": "technology"}
+{"objectId": "2", "modifiedDate": "2024-12-17T21:33:35", "isDeleted": false, "url": "http://localhost:8000/companies/2", "name": "Google", "domains": ["google.com"], "industry": "technology"}
+{"objectId": "3", "modifiedDate": "2024-12-17T21:33:35", "isDeleted": false, "url": "http://localhost:8000/companies/3", "name": "JPMorgan Chase", "domains": ["jpmorganchase.com"], "industry": "banking"}
+{"objectId": "4", "modifiedDate": "2024-12-17T21:33:35", "isDeleted": false, "url": "http://localhost:8000/companies/4", "name": "Wells Fargo", "domains": ["wellsfargo.com"], "industry": "banking"}
+{"objectId": "5", "modifiedDate": "2024-12-17T21:33:35", "isDeleted": false, "url": "http://localhost:8000/companies/5", "name": "Johnsons & Johnson", "domains": ["jnj.com"], "industry": "healthcare"}
+{"objectId": "6", "modifiedDate": "2024-12-18T20:01:58", "isDeleted": false, "url": "http://localhost:8000/companies/6", "name": "Farm Plus", "domains": [], "industry": "agriculture"}

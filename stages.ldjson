@@ -1,0 +1,10 @@
+{"objectId": "0", "name": "prospecting", "isActive": true, "sortOrder": 1}
+{"objectId": "1", "name": "qualification", "isActive": true, "sortOrder": 2}
+{"objectId": "2", "name": "needs_analysis", "isActive": true, "sortOrder": 3}
+{"objectId": "3", "name": "value_proposition", "isActive": true, "sortOrder": 4}
+{"objectId": "4", "name": "id_decision_makers", "isActive": true, "sortOrder": 5}
+{"objectId": "5", "name": "perception_analysis", "isActive": true, "sortOrder": 6}
+{"objectId": "6", "name": "proposal_price_quote", "isActive": true, "sortOrder": 7}
+{"objectId": "7", "name": "negotiation_review", "isActive": true, "sortOrder": 8}
+{"objectId": "8", "name": "closed_won", "isActive": true, "sortOrder": 9}
+{"objectId": "9", "name": "closed_lost", "isActive": true, "sortOrder": 10}

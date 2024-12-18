@@ -1,0 +1,5 @@
+{"objectId": "1", "modifiedDate": "2024-12-17T21:33:35", "isDeleted": false, "url": "http://localhost:8000/users/1", "emailAddress": "admin@examplecrm.com"}
+{"objectId": "2", "modifiedDate": "2024-12-18T14:11:27", "isDeleted": false, "url": "http://localhost:8000/users/2", "emailAddress": "testuserabc@examplecrm.com"}
+{"objectId": "3", "modifiedDate": "2024-12-18T14:14:33", "isDeleted": false, "url": "http://localhost:8000/users/3", "emailAddress": "agbodesii@gmail.com"}
+{"objectId": "4", "modifiedDate": "2024-12-18T14:15:31", "isDeleted": false, "url": "http://localhost:8000/users/4", "emailAddress": "testertester@customcrm.com"}
+{"objectId": "5", "modifiedDate": "2024-12-18T19:59:01", "isDeleted": false, "url": "http://localhost:8000/users/5", "emailAddress": "testertester2@customcrm.com"}
