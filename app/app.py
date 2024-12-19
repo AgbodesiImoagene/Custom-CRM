@@ -3,7 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes import router as api_router
 
-app = FastAPI()
+app = FastAPI(
+    title="Gong Integration API",
+    description="API for integrating Gong with CRM",
+    version="0.1.0",
+)
 
 origins = [
     "*",
@@ -28,4 +32,4 @@ def health():
     return {"status": "healthy"}
 
 
-app.include_router(api_router, prefix="/api")
+app.include_router(api_router)
