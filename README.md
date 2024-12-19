@@ -55,7 +55,7 @@ This project is a custom CRM (Customer Relationship Management) system built usi
 1. **Start the FastAPI server:**
 
    ```sh
-   uvicorn app.main:app --reload
+   uvicorn app.app:app --reload
    ```
 
 2. **Access the API documentation:**
@@ -80,39 +80,39 @@ This project is a custom CRM (Customer Relationship Management) system built usi
 
 2. **Update the `env.js` file**
 
-    Open the Open the `env.js` file and update the `BASE_URL` to point to the URL of your backend setup. For example:
+   Open the `env.js` file and update the `BASE_URL` to point to the URL of your backend setup. For example:
 
-    ```javascript
-    const BASE_URL = 'http://127.0.0.1:8000';
-    ```
+   ```javascript
+   const BASE_URL = "http://127.0.0.1:8000";
+   ```
 
 3. **Serve the frontend using a static file server:**
 
-    You can use any static file server to serve the contents of the `frontend` directory. For example, using `serve`:
+   You can use any static file server to serve the contents of the `frontend` directory. For example, using `serve`:
 
-    ```sh
-    npm install -g serve
-    serve .
-    ```
+   ```sh
+   npm install -g serve
+   serve .
+   ```
 
 ### Hosting the frontend
 
 1. **Build the frontend:**
 
-    ```sh
-    npm run build
-    ```
+   ```sh
+   npm run build
+   ```
 
-    This will create a `dist` directory with the production build of the frontend.
+   This will create a `dist` directory with the production build of the frontend.
 
 2. **Serve the frontend using a static file server:**
 
-    You can use any static file server to serve the contents of the `dist` directory. For example, using `serve`:
+   You can use any static file server to serve the contents of the `dist` directory. For example, using `serve`:
 
-    ```sh
-    npm install -g serve
-    serve -s dist
-    ```
+   ```sh
+   npm install -g serve
+   serve -s dist
+   ```
 
 ## API Endpoints
 
@@ -121,8 +121,8 @@ The API provides the following endpoints:
 - **Auth:**
 
   - `POST /auth/token`: Login and get an access token
-  - `POST /auth/generate-api-key`: Generate an API key for the current user
-  - `POST /auth/basic-auth`: Login with basic authentication
+  - `POST /auth/token/verify`: Verify an access token
+  - `POST /auth/token/refresh`: Refresh an access token
 
 - **Users:**
 
@@ -130,6 +130,8 @@ The API provides the following endpoints:
   - `GET /users/`: Get a list of users
   - `GET /users/{user_id}`: Get a user by ID
   - `PUT /users/{user_id}`: Update a user by ID
+  - `DELETE /users/{user_id}`: Delete a user by ID
+  - `GET /users/me`: Get the current logged-in user
 
 - **Contacts:**
 
@@ -154,8 +156,14 @@ The API provides the following endpoints:
   - `GET /companies/{company_id}`: Get a company by ID
 
 - **Leads:**
+
   - `POST /leads/`: Create a new lead
   - `GET /leads/`: Get a list of leads
   - `GET /leads/{lead_id}`: Get a lead by ID
   - `PUT /leads/{lead_id}`: Update a lead by ID
   - `DELETE /leads/{lead_id}`: Delete a lead by ID
+
+- **Gong:**
+  - `POST /gong/register_integration`: Register a new Gong integration
+  - `POST /gong/update_schema`: Update the Gong schema
+  - `POST /gong/full_db_dump`: Perform a full database dump to Gong

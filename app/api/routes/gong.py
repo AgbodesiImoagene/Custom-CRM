@@ -12,7 +12,7 @@ GONG_API_URL = os.getenv("GONG_API_URL")
 GONG_ACCESS_KEY = os.getenv("GONG_ACCESS_KEY")
 GONG_ACCESS_KEY_SECRET = os.getenv("GONG_ACCESS_KEY_SECRET")
 credentials = (GONG_ACCESS_KEY, GONG_ACCESS_KEY_SECRET)
-BASE_URL = os.getenv("BASE_URL", "http://localhost:8000")
+BASE_URL = os.getenv("BASE_URL", "http://localhost:8000/api")
 
 
 @router.post("/register_integration", response_model=schemas.IntegrationResponse)
