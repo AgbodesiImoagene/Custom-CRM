@@ -1,6 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, EmailStr
-from typing import Optional
+from typing import Optional, List, Dict, Any
 from app.db.models import (
     StatusEnum,
     StageEnum,
@@ -182,3 +182,41 @@ class IntegrationResponse(BaseModel):
 
 class MessageResponse(BaseModel):
     message: str
+
+
+class SchemaField(BaseModel):
+    uniqueName: str
+    label: str
+    type: str
+    lastModified: Optional[str] = None
+    isDeleted: Optional[bool] = None
+    referenceTo: Optional[str] = None
+    orderedValueList: Optional[List[str]] = None
+
+
+class SchemaResponse(BaseModel):
+    requestId: str
+    objectTypeToSelectedFields: Dict[str, List[SchemaField]]
+
+
+class GongRequestError(BaseModel):
+    line: int
+    description: str
+
+
+class GongRequestStatusResponse(BaseModel):
+    status: str
+    errors: Optional[List[GongRequestError]] = None
+
+
+class CrmObject(BaseModel):
+    crmObjects: Dict[str, Any]
+
+
+class CrmObjectsMap(BaseModel):
+    crmObjects: Dict[str, CrmObject]
+
+
+class CrmObjectsResponse(BaseModel):
+    requestId: str
+    crmObjectsMap: Dict[str, CrmObjectsMap]

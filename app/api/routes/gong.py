@@ -80,7 +80,7 @@ def view_schema(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.get("/check_request_status", response_model=schemas.RequestStatusResponse)
+@router.get("/check_request_status", response_model=schemas.GongRequestStatusResponse)
 def check_request_status(
     request_id: str,
     db: Session = Depends(get_db),
