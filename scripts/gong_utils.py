@@ -40,6 +40,8 @@ def main():
     - view_schema: Views the schema fields for different object types.
     - check_request_status: Checks the status of a request using the provided request ID.
     - get_crm_objects: Retrieves CRM objects based on the provided object type and object IDs.
+    - delete_integration: Deletes the specified CRM integration.
+    - view_integration_id: Displays the integration ID of the current CRM integration.
 
     Arguments:
     - action (str): The action to perform. Choices are:
@@ -49,12 +51,17 @@ def main():
         - "view_schema"
         - "check_request_status"
         - "get_crm_objects"
+        - "delete_integration"
+        - "view_integration_id"
     - --request_id (str, optional): Request ID to check status (required for check_request_status action).
     - --object_type (str, optional): Object type to retrieve (required for get_crm_objects action).
     - --object_ids (str, optional): Comma-separated list of object IDs to retrieve (required for get_crm_objects action).
+    - --integration_name (str, optional): Name of the integration (required for register_integration action).
+    - --owner_email (str, optional): Owner email of the integration (required for register_integration action).
+    - --integration_id (str, optional): Integration ID to delete (required for delete_integration action).
 
     Usage:
-        python gong_utils.py <action> [--request_id REQUEST_ID] [--object_type OBJECT_TYPE] [--object_ids OBJECT_IDS]
+        python gong_utils.py <action> [--request_id REQUEST_ID] [--object_type OBJECT_TYPE] [--object_ids OBJECT_IDS] [--integration_name INTEGRATION_NAME] [--owner_email OWNER_EMAIL] [--integration_id INTEGRATION_ID]
     """
     parser = argparse.ArgumentParser(description="Gong CRM Integration CLI")
     parser.add_argument(
@@ -66,6 +73,8 @@ def main():
             "view_schema",
             "check_request_status",
             "get_crm_objects",
+            "delete_integration",
+            "view_integration_id",
         ],
         help="Action to perform",
     )
@@ -82,13 +91,32 @@ def main():
         "--object_ids",
         help="Comma-separated list of object IDs to retrieve (required for get_crm_objects action)",
     )
+    parser.add_argument(
+        "--integration_name",
+        help="Name of the integration (required for register_integration action)",
+    )
+    parser.add_argument(
+        "--owner_email",
+        help="Owner email of the integration (required for register_integration action)",
+    )
+    parser.add_argument(
+        "--integration_id",
+        help="Integration ID to delete (required for delete_integration action)",
+    )
     args = parser.parse_args()
 
     session = SessionLocal()
     gong_service = GongService(GONG_API_URL, credentials, BASE_URL, session)
 
     if args.action == "register_integration":
-        integration_id = gong_service.get_crm_integration()
+        if not args.integration_name or not args.owner_email:
+            print(
+                "Error: --integration_name and --owner_email are required for register_integration action"
+            )
+            sys.exit(1)
+        integration_id = gong_service.register_crm_integration(
+            args.integration_name, args.owner_email
+        )
         print(f"Integration ID: {integration_id}")
 
     elif args.action == "update_schema":
@@ -141,6 +169,17 @@ def main():
             integration_id, args.object_type, object_ids
         )
         print(json.dumps(objects, indent=2))
+
+    elif args.action == "delete_integration":
+        if not args.integration_id:
+            print("Error: --integration_id is required for delete_integration action")
+            sys.exit(1)
+        gong_service.delete_crm_integration(args.integration_id)
+        print("Integration deleted successfully.")
+
+    elif args.action == "view_integration_id":
+        integration_id = gong_service.get_crm_integration()
+        print(f"Integration ID: {integration_id}")
 
     # Close database session
     session.close()

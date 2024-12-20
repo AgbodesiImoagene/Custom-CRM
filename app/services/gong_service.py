@@ -1,7 +1,6 @@
 import json
-import time
-import uuid
 import os
+import uuid
 from datetime import datetime, timezone
 import requests
 from app.db.models import (
@@ -17,7 +16,8 @@ from app.db.models import (
 
 
 def isoformat_without_ms(dt):
-    return dt.replace(microsecond=0).isoformat()
+    isoformat = dt.replace(microsecond=0).isoformat()
+    return f"{isoformat}Z" if not dt.tzinfo else isoformat
 
 
 class GongException(Exception):
@@ -86,10 +86,10 @@ class GongService:
         self.base_url = base_url
         self.session = session
 
-    def register_crm_integration(self):
+    def register_crm_integration(self, name, owner_email):
         integration_payload = {
-            "name": "Custom CRM",
-            "ownerEmail": "kay-fer@gmail.com",
+            "name": name,
+            "ownerEmail": owner_email,
         }
 
         response = requests.put(
@@ -113,7 +113,24 @@ class GongService:
         integrations = response.json().get("integrations", [])
         if response.status_code == 200 and len(integrations) > 0:
             return integrations[0].get("integrationId")
-        return self.register_crm_integration()
+        raise GongException(
+            f"Failed to get CRM integration: {response.status_code} - {response.text}"
+        )
+
+    def delete_crm_integration(self, integration_id):
+        params = {"clientRequestId": str(uuid.uuid4()), "integrationId": integration_id}
+
+        response = requests.delete(
+            f"{self.api_url}/crm/integrations",
+            headers={"Content-Type": "application/json"},
+            params=params,
+            auth=self.credentials,
+            timeout=10,
+        )
+        if response.status_code != 201:
+            raise GongException(
+                f"Failed to delete CRM integration: {response.status_code} - {response.text}"
+            )
 
     def list_schema_fields(self, integration_id, object_type):
         params = {"integrationId": integration_id, "objectType": object_type}
@@ -232,7 +249,7 @@ class GongService:
             integration_id, "STAGE", open("stages.ldjson", "rb")
         )
 
-        # os.remove("stages.ldjson")
+        os.remove("stages.ldjson")
 
         return response
 
@@ -252,7 +269,7 @@ class GongService:
             integration_id, "BUSINESS_USER", open("users.ldjson", "rb")
         )
 
-        # os.remove("users.ldjson")
+        os.remove("users.ldjson")
 
         return response
 
@@ -274,7 +291,7 @@ class GongService:
             integration_id, "ACCOUNT", open("companies.ldjson", "rb")
         )
 
-        # os.remove("companies.ldjson")
+        os.remove("companies.ldjson")
 
         return response
 
@@ -298,7 +315,7 @@ class GongService:
                 integration_id, "CONTACT", open("contacts.ldjson", "rb")
             )
 
-        # os.remove("contacts.ldjson")
+        os.remove("contacts.ldjson")
 
         return response
 
@@ -330,7 +347,7 @@ class GongService:
                 integration_id, "DEAL", open("deals.ldjson", "rb")
             )
 
-        # os.remove("deals.ldjson")
+        os.remove("deals.ldjson")
 
         return response
 
@@ -357,7 +374,7 @@ class GongService:
                 integration_id, "LEAD", open("leads.ldjson", "rb")
             )
 
-        # os.remove("leads.ldjson")
+        os.remove("leads.ldjson")
 
         return response
 
