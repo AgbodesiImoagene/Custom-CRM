@@ -184,6 +184,15 @@ class MessageResponse(BaseModel):
     message: str
 
 
+class GongAsyncResponse(BaseModel):
+    requestId: str
+    clientRequestId: str
+
+
+class GongUploadMessageResponse(MessageResponse):
+    responses: Dict[str, GongAsyncResponse]
+
+
 class SchemaField(BaseModel):
     uniqueName: str
     label: str
@@ -219,4 +228,4 @@ class CrmObjectsMap(BaseModel):
 
 class CrmObjectsResponse(BaseModel):
     requestId: str
-    crmObjectsMap: Dict[str, CrmObjectsMap]
+    crmObjectsMap: Dict[str, Optional[CrmObjectsMap]]

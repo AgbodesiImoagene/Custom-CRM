@@ -27,7 +27,7 @@ def register_integration(
         integration_id = gong_service.register_crm_integration(
             integration_name, owner_email
         )
-        return {"integration_id": integration_id}
+        return {"integration_id": str(integration_id)}
     except GongException as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -46,7 +46,7 @@ def update_schema(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/full_db_dump", response_model=schemas.MessageResponse)
+@router.post("/full_db_dump", response_model=schemas.GongUploadMessageResponse)
 def full_db_dump(
     db: Session = Depends(get_db),
     current_user: schemas.User = Depends(get_current_active_admin),
@@ -55,12 +55,20 @@ def full_db_dump(
     try:
         integration_id = gong_service.get_crm_integration()
         users, companies, contacts, deals, leads = gong_service.fetch_data_from_db()
-        gong_service.push_users_to_gong(integration_id, users)
-        gong_service.push_companies_to_gong(integration_id, companies)
-        gong_service.push_contacts_to_gong(integration_id, contacts)
-        gong_service.push_deals_to_gong(integration_id, deals)
-        gong_service.push_leads_to_gong(integration_id, leads)
-        return {"message": "Full database dump completed successfully."}
+
+        responses = {
+            "STAGE": gong_service.push_stages_to_gong(integration_id),
+            "BUSINESS_USER": gong_service.push_users_to_gong(integration_id, users),
+            "ACCOUNT": gong_service.push_companies_to_gong(integration_id, companies),
+            "CONTACT": gong_service.push_contacts_to_gong(integration_id, contacts),
+            "DEAL": gong_service.push_deals_to_gong(integration_id, deals),
+            "LEAD": gong_service.push_leads_to_gong(integration_id, leads),
+        }
+
+        return {
+            "message": "Full database dump completed successfully.",
+            "responses": responses,
+        }
     except GongException as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -75,7 +83,7 @@ def view_schema(
     try:
         integration_id = gong_service.get_crm_integration()
         schema_fields = gong_service.list_schema_fields(integration_id, object_type)
-        return {"schema_fields": schema_fields}
+        return schema_fields
     except GongException as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -109,7 +117,7 @@ def get_crm_objects(
         objects = gong_service.get_crm_objects(
             integration_id, object_type, object_ids_list
         )
-        return {"objects": objects}
+        return objects
     except GongException as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -136,6 +144,6 @@ def view_integration_id(
     gong_service = GongService(GONG_API_URL, credentials, BASE_URL, db)
     try:
         integration_id = gong_service.get_crm_integration()
-        return {"integration_id": integration_id}
+        return {"integration_id": str(integration_id)}
     except GongException as e:
         raise HTTPException(status_code=500, detail=str(e))
